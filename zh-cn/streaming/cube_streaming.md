@@ -1,40 +1,48 @@
-## Kylin Cube from Streaming (Kafka)
+## KAP从Kafka数据源流式构建Cube
 
-Kylin v1.5 releases the experimental streaming cubing feature. This is a step by step tutorial, illustrating how to create and build a cube from streaming; 
+KAP给用户提供了流式构建的功能，用户可以从Kafka数据源读取数据，并且按一定的时间频率流式构建cube.
 
-## Preparation
-To finish this tutorial, you need a Hadoop environment which has kylin v1.5.2 installed, and also have Kafka be ready to use; Previous Kylin version has a couple issues so please upgrade your Kylin instance at first.
+## 环境搭建
 
-In this tutorial, we will use Hortonworks HDP 2.2.4 Sandbox VM as the Hadoop environment.
+本教程需要能支持KAP2.3或kylin1.6的hadoop环境，并且，需要预先安装好Kafka。本教程中，我们使用Hortonworks HDP 2.4 Sandbox VM作为Hadoop环境。
 
-## Create sample Kafka topic and populate data
-
-Firstly, we need a Kafka topic for the incoming data; A sample topic "kylin_demo" will be created here:
-
+## 创建Kafka topic并导入数据
+1 安装Kafka并且启动broker
 {% highlight Groff markup %}
-/usr/hdp/current/kafka-broker/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kylin_demo
-Created topic "kylin_demo".
+curl -s http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/0.10.0.0/kafka_2.10-0.10.0.0.tgz | tar -xz -C /usr/local/
+
+cd /usr/local/kafka_2.10-0.10.0.0/
+
+bin/kafka-server-start.sh config/server.properties &
 {% endhighlight %}
 
-Secondly, we need put sample data to this topic; Kylin has a utility class which can do this; Assume Kylin is installed in /root/apache-kylin-1.5.2-bin:
+2 为流数据创建一个名为kylin_demo的topic
 
 {% highlight Groff markup %}
-export KYLIN_HOME='/root/apache-kylin-1.5.2-bin'
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic kylindemo
 
-cd $KYLINN_HOME
-./bin/kylin.sh org.apache.kylin.source.kafka.util.KafkaSampleProducer --topic kylin_demo --broker sandbox:6667 —delay 0
+Created topic "kylindemo".
+
 {% endhighlight %}
 
-It will send 1 record to Kafka every 2 second, with "delay" be 0, the "order_time" will be the same as the timestamp that the message be created. Please don't press CTRL+C before finishing this tutorial, otherwise the streaming will be stopped.
+3 往topic中发送数据
 
-Thirdly, you can check the sample message with kafka-console-consumer.sh, with another shell session:
+KAP提供了一个简单的工具类用于向Kafka中发送数据。
 
 {% highlight Groff markup %}
-/usr/hdp/current/kafka-broker/bin/kafka-console-consumer.sh --zookeeper sandbox.hortonworks.com:2181 --topic kylin_demo --from-beginning
-{"amount":4.036149489293339,"category":"ELECTRONIC","order_time":1462465632689,"device":"Windows","qty":4,"currency":"USD","country":"AUSTRALIA"}
-{"amount":83.74699855368388,"category":"CLOTH","order_time":1462465635214,"device":"iOS","qty":8,"currency":"USD","country":"INDIA"}
+export KAFKA_HOME=/usr/local/kafka_2.10-0.10.0.0
 
- {% endhighlight %}
+cd $KYLIN_HOME
+./bin/kylin.sh org.apache.kylin.source.kafka.util.KafkaSampleProducer --topic kylindemo --broker localhost:9092
+{% endhighlight %}
+
+这个工具类每秒会向Kafka中发送100条记录，在接下来，请一直保持这个程序运行。同时，你可以通过Kafka提供的consumer来检查topic中的消息
+
+{% highlight Groff markup %}
+cd $KAFKA_HOME
+bin/kafka-console-consumer.sh --zookeeper localhost:2181 --bootstrap-server localhost:9092 --topic kylindemo --from-beginning
+{% endhighlight %}
+
 
 ## Define a table from streaming
 Start Kylin server, login Kylin web GUI, select or create a project; Click "Model" -> "Data Source", then click the icon "Add Streaming Table"; 
