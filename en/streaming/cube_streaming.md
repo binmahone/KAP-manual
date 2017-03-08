@@ -88,7 +88,7 @@ The streaming cube is almost the same as a normal cube. A couple of points need 
 
 Save the cube.
 
-## Run a micro-batch build
+## Run a build
 
 You can trigger the build from web GUI, by clicking “Actions” -> “Build”, or sending a request to Kylin RESTful API with ‘curl’ command:
 
