@@ -57,9 +57,9 @@ With the table defined in previous step, let's create the data model. This step 
 
 Here we pick 8 dimension columns and 2 measure columns:
  
-![](/images/tutorial/1.5/Kylin-Cube-Streaming-Tutorial/5 Data model dimension.png)
+![](pictures/5_Data_model_dimension.png)
  	
-![](/images/tutorial/1.5/Kylin-Cube-Streaming-Tutorial/6 Data model measure.png)
+![](pictures/6_Data_model_measure.png)
  	
 	
 Save the data model.
@@ -73,13 +73,13 @@ The streaming cube is almost the same as a normal cube. A couple of points need 
 * In the "refersh setting" step, you should create more merge ranges, like 0.5 hour, 4 hours, 1 day, and 7 days. This helps control the cube segment amount.
 * In the "rowkeys" section, drag the "minute\_start" to the head position. For streaming queries, the time condition is used frequently. So putting it to the head will help narrow down the scan range.
 
-	![](/images/tutorial/1.5/Kylin-Cube-Streaming-Tutorial/8 Cube dimension.png)
+	![](pictures/8_Cube_dimension.png)
 	
-	![](/images/tutorial/1.5/Kylin-Cube-Streaming-Tutorial/9 Cube measure.png)
+	![](pictures/9_Cube_measure.png)
 		
-	![](/images/tutorial/1.5/Kylin-Cube-Streaming-Tutorial/10 Auto merge.png)
+	![](pictures/10_agg_group.png)
 
-	![](/images/tutorial/1.5/Kylin-Cube-Streaming-Tutorial/11 Rowkey.png)
+	![](pictures/11_Rowkey.png)
 
 Save the cube.
 
