@@ -1,9 +1,9 @@
 ## KAP Building Cube from Streaming (Kafka)
 
-KAP v2.3 releases the scalable streaming cubing function, it leverages Hadoop to consume the data from Kafka to build the cube. This doc is a step by step tutorial, illustrating how to create and build a sample cube.
+KAP 2.3 releases the scalable streaming cubing function, it leverages Hadoop to consume the data from Kafka to build the cube. This doc is a step by step tutorial, illustrating how to create and build a sample cube.
 
 ## Preparation
-To finish this tutorial, you need a Hadoop environment which has KAP2.3 installed, and have Kafka be ready to use. In this tutorial, we use Hortonworks HDP 2.4 Sandbox VM as the Hadoop environment.
+To finish this tutorial, you need a Hadoop environment which has KAP 2.3 installed, and have Kafka be ready to use. In this tutorial, we use Hortonworks HDP 2.4 Sandbox VM as the Hadoop environment.
 
 ## Create sample Kafka topic and populate data
 
@@ -104,10 +104,8 @@ Click the “Insight” tab, compose a SQL to run, e.g.:
 
 
 Once the first build and query got successfully, you can schedule incremental builds at a certain frequency. KAP records the offsets of each build; when receives a build request, it will start from the last end position, and then seeks the latest offsets from Kafka. You can invoke RESTful API with any scheduler tools like Linux cron to build periodically:
-{% highlight Groff markup %}
-crontab -e
-*/5 * * * * curl -X PUT --user ADMIN:KYLIN -H "Content-Type: application/json;charset=utf-8" -d '{ "sourceOffsetStart": 0, "sourceOffsetEnd": 9223372036854775807, "buildType": "BUILD"}' http://localhost:7070/kylin/api/cubes/{your_cube_name}/build2
-{% endhighlight %}
+
+    crontab -e */5 * * * * curl -X PUT --user ADMIN:KYLIN -H "Content-Type: application/json;charset=utf-8" -d '{    "sourceOffsetStart": 0,    "sourceOffsetEnd": 9223372036854775807, "buildType": "BUILD"}' http://localhost:7070/kylin/api/cubes/{your_cube_name}/build2
 
 Now you can find the cube is automatically built from streaming. And when the cube segments accumulate to a longer time range, KAP will automatically merge them into a larger segment.
 
