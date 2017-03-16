@@ -28,7 +28,7 @@ Async query helps user to execute queries asynchronously, providing a more effic
 - code - return code for this request, "000" means everything is well handled.
 - data - the main response body for the reponse. including three fields:
   - queryID - the query id for to process the query 
-  - status - the current status of the query,  for query issuing the status will always be "RUNNING"
+  - status - the current status of the query, for query issuing the status will always be "RUNNING"
   - info - additional description message for the status
 - msg - ignore this
 
@@ -65,7 +65,7 @@ curl -X POST -H "Authorization: Basic QURNSU46S1lMSU4=" -H "Content-Type: applic
 - code - return code for this request, "000" means everything is well handled.
 - data - the main response body for the reponse. including three fields:
   - queryID - the query id for to process the query 
-  - status - the current status of the query,  there're four possible status:
+  - status - the current status of the query, there're four possible status:
     - RUNNING - the query is still running
     - SUCCESSFUL - the query has succeeded
     - FAILED - the query has failed
@@ -112,8 +112,7 @@ curl -X GET -H "Authorization: Basic QURNSU46S1lMSU4=" -H "Content-Type: applica
 ## retrieve async query result
 
 **GET /kylin/api/async_query/{QUERY_ID}/result**
-
-**Invoke this after you confirm query status being SUCCESSFUL**
+Invoke this after you confirm query status being SUCCESSFUL
 
 #### Request Path Variable
 
@@ -134,7 +133,7 @@ curl -X GET -H "Authorization: Basic QURNSU46S1lMSU4=" -H "Content-Type: applica
 ## Clean up async queries results
 
 **DELETE /kylin/api/async_query**
-**this API will also clean queries with un-fetched results**
+this API will also clean queries with un-fetched results
 
 #### Response Sample
 
