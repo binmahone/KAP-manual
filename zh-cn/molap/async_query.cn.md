@@ -6,10 +6,10 @@
 
 #### 请求主体
 
-- sql - `必须` `string` sql 查询语句
+- sql - `必须` `string` sql查询语句
 - offset - `可选` `int`  查询的偏移，如果在查询语句中已经有偏移，该值会被忽略
 - limit - `可选` `int` 查询限制，如果在查询语句中已经有限制，该值会被忽略
-- project - `可选` `string` 选中的项目，默认为“DEFAULT'''
+- project - `可选` `string` 选中的项目，默认为"DEFAULT"
 
 #### 请求示例
 
@@ -113,7 +113,7 @@ curl -X GET -H "Authorization: Basic QURNSU46S1lMSU4=" -H "Content-Type: applica
 
 **GET /kylin/api/async_query/{QUERY_ID}/result**
 
-**请确认查询状态为SUCCESSFUL之后再调用此接口**
+请确认查询状态为SUCCESSFUL之后再调用此接口
 
 #### 请求路径参数
 
@@ -133,10 +133,9 @@ curl -X GET -H "Authorization: Basic QURNSU46S1lMSU4=" -H "Content-Type: applica
 
 ## 清理异步查询结果
 
-
-
 **DELETE /kylin/api/async_query**
-**该接口可能会删除还没有被获取结果的查询**
+
+该接口可能会删除还没有被获取结果的查询
 
 #### 返回示例
 
